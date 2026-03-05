@@ -46,12 +46,13 @@
     <div class="bootTitle">Support chat • Cynergy Bank</div>
     <div class="bootSub">
       Loading chat… If it doesn’t open immediately, tap “Start chat”.
-      <br>(The Cognigy launcher can take a moment to render.)
+      <br>(The launcher can take a moment to render.)
     </div>
     <button class="bootBtn" id="bootStart">Start chat</button>
   </div>
 
-  <script src="https://github.com/Cognigy/Webchat/releases/download/v3.2.0/webchat.js"></script>
+  <!-- You can also use "latest" if you want feature parity with portal faster -->
+  <script src="https://github.com/Cognigy/Webchat/releases/latest/download/webchat.js"></script>
 
   <script>
     const ENDPOINT =
@@ -59,6 +60,9 @@
 
     const boot = document.getElementById("boot");
     const bootStart = document.getElementById("bootStart");
+
+    // Optional: pass customer context into the session
+    const customer = { name: "Andy Martin", accountNumber: "54060264" };
 
     function hasUsableInput(){
       const t = document.querySelector("textarea");
@@ -132,8 +136,19 @@
 
     try{
       initWebchat(ENDPOINT, {
+        // Helpful for analytics + keeping sessions stable in demos
+        userId: customer.accountNumber,
+        sessionId: "andy-martin-demo",
+
         settings: {
-          embeddingConfiguration: { awaitEndpointConfig: true }
+          embeddingConfiguration: { awaitEndpointConfig: true },
+
+          // Provide context to your flow (readable in input.data / profile depending on config)
+          // If your flow uses different fields, adjust as needed.
+          payload: {
+            customerName: customer.name,
+            accountNumber: customer.accountNumber
+          }
         }
       });
     } catch (e){
@@ -153,69 +168,39 @@
     });
     obs.observe(document.documentElement, { childList:true, subtree:true });
 
-    /**
-     * ✅ STREAM MERGE SHIM (demo-friendly)
-     * If the bot "streams" as multiple separate messages, merge them into one bubble.
-     * Why this happens: depending on webchat version/config + how the endpoint outputs chunks,
-     * the embed can render each chunk as a separate message.
-     *
-     * This DOM shim merges consecutive bot messages arriving within a short window.
-     */
+    // Stream-merge shim: merges consecutive bot chunks into one bubble
     (function installStreamMergeShim(){
-      const MERGE_WINDOW_MS = 1200;
+      const MERGE_WINDOW_MS = 1400;
       let lastMergeAt = 0;
 
       function isVisible(el){
         return !!(el && el.getClientRects && el.getClientRects().length);
       }
 
-      function findMessageListRoot(){
-        // Try several likely containers; Cognigy Webchat DOM changes between versions.
-        return (
-          document.querySelector("[class*='messages' i]") ||
-          document.querySelector("[class*='messageList' i]") ||
-          document.querySelector("[data-testid*='messages' i]") ||
-          document.querySelector("main") ||
-          document.body
-        );
-      }
-
-      function getAllMessageBubbles(){
-        // Broad selectors to catch bubbles across versions.
+      function getBubbles(){
         const sel = [
           "[class*='message' i]",
           "[data-testid*='message' i]",
           "[role='listitem']"
         ].join(",");
-        return Array.from(document.querySelectorAll(sel))
-          .filter(isVisible);
+        return Array.from(document.querySelectorAll(sel)).filter(isVisible);
       }
 
       function isBotBubble(el){
         const cls = (el.className || "").toString().toLowerCase();
-        const txt = (el.getAttribute("data-testid") || "").toLowerCase();
-        // Heuristics: bot/agent often marked; if not, treat "incoming" bubbles as bot.
-        return (
-          cls.includes("bot") ||
-          cls.includes("agent") ||
-          cls.includes("incoming") ||
-          txt.includes("bot") ||
-          txt.includes("agent")
-        );
+        const tid = (el.getAttribute("data-testid") || "").toLowerCase();
+        return cls.includes("bot") || cls.includes("agent") || cls.includes("incoming") ||
+               tid.includes("bot") || tid.includes("agent") || tid.includes("incoming");
       }
 
-      function bubbleTextNode(el){
-        // Find the most likely text container within a bubble
-        return (
-          el.querySelector("[class*='text' i]") ||
-          el.querySelector("[class*='content' i]") ||
-          el.querySelector("p") ||
-          el
-        );
+      function textNode(el){
+        return el.querySelector("[class*='text' i]") ||
+               el.querySelector("[class*='content' i]") ||
+               el.querySelector("p") || el;
       }
 
-      function mergeLastTwoBotBubblesIfNeeded(){
-        const bubbles = getAllMessageBubbles();
+      function mergeIfNeeded(){
+        const bubbles = getBubbles();
         if (bubbles.length < 2) return;
 
         const b2 = bubbles[bubbles.length - 1];
@@ -224,40 +209,27 @@
         if (!isBotBubble(b1) || !isBotBubble(b2)) return;
 
         const now = Date.now();
-        if (now - lastMergeAt > MERGE_WINDOW_MS) {
-          // We only merge if messages are coming in quickly.
-          // If you want more aggressive merging, remove this guard.
+        if (lastMergeAt && (now - lastMergeAt > MERGE_WINDOW_MS)) {
+          // still allow merge; comment this out if you want stricter behavior
         }
 
-        const t1 = bubbleTextNode(b1);
-        const t2 = bubbleTextNode(b2);
+        const t1 = textNode(b1);
+        const t2 = textNode(b2);
+        const chunk = (t2.innerText || "").trim();
+        if (!chunk) return;
 
-        const text2 = (t2.innerText || "").trim();
-        if (!text2) return;
-
-        // Append with a space/newline depending on formatting
-        const sep = (t1.innerText || "").endsWith("\n") ? "" : "\n";
-        t1.innerText = ((t1.innerText || "").trimEnd()) + sep + text2;
-
-        // Remove the second bubble
+        const sep = (t1.innerText || "").trim().length ? "\n" : "";
+        t1.innerText = ((t1.innerText || "").trimEnd()) + sep + chunk;
         b2.remove();
         lastMergeAt = now;
       }
 
-      const root = findMessageListRoot();
-      const mergeObserver = new MutationObserver((mutations) => {
-        // any added node could be a streamed chunk
-        let added = false;
-        for (const m of mutations) {
-          if (m.addedNodes && m.addedNodes.length) { added = true; break; }
-        }
-        if (!added) return;
-
-        // Try a few merges in case multiple chunks arrive
-        for (let i = 0; i < 3; i++) mergeLastTwoBotBubblesIfNeeded();
+      const mergeObserver = new MutationObserver((muts) => {
+        if (!muts.some(m => m.addedNodes && m.addedNodes.length)) return;
+        for (let i = 0; i < 4; i++) mergeIfNeeded();
       });
 
-      mergeObserver.observe(root, { childList:true, subtree:true });
+      mergeObserver.observe(document.documentElement, { childList:true, subtree:true });
     })();
   </script>
 </body>
