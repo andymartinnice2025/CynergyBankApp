@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!doctype html>
 <html lang="en" dir="ltr">
 <head>
@@ -8,17 +7,13 @@
 
   <style>
     :root{
-      /* Cynergy-ish teal theme */
       --cy-bg:#EAF3F2;
       --cy-card:#FFFFFF;
-      --cy-border: rgba(255,255,255,.65);
-      --cy-border-2: rgba(0,0,0,.06);
 
-      --cy-deep:#083A44;     /* deep teal */
-      --cy-deep-2:#062E36;   /* deeper teal */
-      --cy-teal:#00B7A7;     /* accent teal */
-      --cy-lime:#F3E600;     /* highlight yellow from screenshot */
-      --cy-muted: rgba(255,255,255,.78);
+      --cy-deep:#083A44;
+      --cy-deep-2:#062E36;
+      --cy-teal:#00B7A7;
+      --cy-lime:#F3E600;
 
       --text:#0B1F26;
       --muted:#5E6E73;
@@ -26,9 +21,6 @@
       --shadow:0 26px 70px rgba(0,0,0,.28);
       --shadow-soft:0 14px 34px rgba(6,46,54,.14);
       --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
-
-      /* Optional logo image (leave empty to use SVG mark) */
-      --brand-logo-url: "";
     }
 
     *{ box-sizing:border-box; }
@@ -42,7 +34,6 @@
       padding:22px;
     }
 
-    /* Phone shell */
     .phone{
       width:min(430px, 94vw);
       height:min(900px, 94vh);
@@ -62,7 +53,6 @@
       flex-direction:column;
     }
 
-    /* Header */
     .header{
       padding:18px 18px 14px;
       color:#fff;
@@ -173,7 +163,6 @@
       box-shadow:0 0 0 3px rgba(67,209,123,.18);
     }
 
-    /* Summary card area (like screenshot) */
     .summaryWrap{
       margin-top:14px;
       background: rgba(255,255,255,.08);
@@ -229,7 +218,6 @@
     }
     .legSmall{ font-size:12px; opacity:.86; font-weight:900; }
 
-    /* Donut */
     .donut{
       width:136px;height:136px;border-radius:999px;
       background:
@@ -244,7 +232,6 @@
       width:102px;height:102px;border-radius:999px;
       background: linear-gradient(180deg, rgba(6,46,54,.92), rgba(6,46,54,.84));
       border:1px solid rgba(255,255,255,.18);
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,.08);
       position:absolute;
     }
     .donut span{
@@ -261,12 +248,11 @@
       padding:16px 16px 92px;
     }
 
-    /* Cards */
     .card{
       background:var(--cy-card);
       border:1px solid rgba(0,0,0,.06);
       border-radius:22px;
-      box-shadow: var(--shadow-soft);
+      box-shadow: 0 14px 34px rgba(6,46,54,.12);
     }
 
     .approvals{
@@ -279,9 +265,7 @@
       cursor:pointer;
       user-select:none;
     }
-    .apLeft{
-      display:flex; align-items:center; gap:12px;
-    }
+    .apLeft{ display:flex; align-items:center; gap:12px; }
     .apCount{
       width:30px;height:30px;border-radius:999px;
       background: rgba(0,183,167,.12);
@@ -313,13 +297,12 @@
       cursor:pointer;
       user-select:none;
     }
-    .bar{
-      width:4px;height:44px;border-radius:99px;
-      background: var(--cy-teal);
-    }
+    .bar{ width:4px;height:44px;border-radius:99px; background: var(--cy-teal); }
     .bar.yellow{ background: var(--cy-lime); }
+
     .acctName{ font-weight:1100; color: rgba(11,31,38,.92); }
     .acctNum{ font-weight:900; font-size:12px; color: rgba(11,31,38,.55); margin-top:2px; }
+
     .acctRight{
       text-align:right;
       display:flex;
@@ -327,16 +310,8 @@
       gap:2px;
       min-width:110px;
     }
-    .bal{
-      font-weight:1100;
-      color: rgba(11,31,38,.92);
-      font-size:16px;
-    }
-    .avail{
-      font-weight:900;
-      color: rgba(11,31,38,.55);
-      font-size:12px;
-    }
+    .bal{ font-weight:1100; color: rgba(11,31,38,.92); font-size:16px; }
+    .avail{ font-weight:900; color: rgba(11,31,38,.55); font-size:12px; }
 
     .miniRow{
       margin-top:12px;
@@ -344,9 +319,7 @@
       grid-template-columns: 1fr 1fr;
       gap:12px;
     }
-    .mini{
-      padding:14px;
-    }
+    .mini{ padding:14px; }
     .miniTitle{ font-weight:1000; color: rgba(11,31,38,.86); }
     .miniSub{ margin-top:4px; font-weight:900; font-size:12px; color: rgba(11,31,38,.55); line-height:1.35; }
     .btnRow{ display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
@@ -382,7 +355,6 @@
       box-shadow:none;
     }
 
-    /* Bottom nav */
     .nav{
       position:absolute;
       left:0;right:0;bottom:0;
@@ -405,11 +377,7 @@
       min-width:64px;
       user-select:none;
     }
-    .navItem .ico{
-      width:28px;height:28px;
-      display:grid;place-items:center;
-      border-radius:12px;
-    }
+    .navItem .ico{ width:28px;height:28px; display:grid;place-items:center; border-radius:12px; }
     .navItem.active{ color: var(--cy-teal); }
     .navItem.active .ico{
       background: rgba(0,183,167,.12);
@@ -417,7 +385,6 @@
       color: var(--cy-teal);
     }
 
-    /* Modals / overlays */
     .modal, .overlay{
       position:absolute;
       inset:0;
@@ -494,7 +461,6 @@
     .neg{ color:#D62D2D; }
     .pos{ color:#0E8A5B; }
 
-    /* Chat overlay */
     .chatSheet{
       position:absolute;
       left:12px; right:12px;
@@ -553,7 +519,6 @@
           <div class="logoCenter" title="Cynergy Bank">
             <div class="brandMark" aria-label="Cynergy Bank">
               <img id="brandLogoImg" class="brandLogoImg" alt="Cynergy Bank Logo" />
-              <!-- fallback simple mark -->
               <svg id="brandLogoFallback" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path d="M10 40c10-16 24-22 44-24v10c-18 2-26 8-34 20H10z" fill="#00B7A7"/>
                 <path d="M10 48c10-10 22-14 44-16v10c-18 2-26 6-34 14H10z" fill="#F3E600" opacity=".9"/>
@@ -578,7 +543,7 @@
         <div class="headline">
           <div>
             <div class="h1">All accounts</div>
-            <div class="sub">Welcome back, <b>FW</b> • Updated just now</div>
+            <div class="sub">Welcome back, <b>Andy Martin</b> • Updated just now</div>
           </div>
           <div class="pillStatus"><span class="dot"></span> Support available</div>
         </div>
@@ -626,23 +591,11 @@
             <div class="bar"></div>
             <div>
               <div class="acctName">Business Current</div>
-              <div class="acctNum">12345678 • Sort code 12-34-56</div>
+              <div class="acctNum">54060264 • Sort code 12-34-56</div>
             </div>
             <div class="acctRight">
-              <div class="bal">£6,134.80</div>
-              <div class="avail">Available: £6,134.80</div>
-            </div>
-          </div>
-
-          <div class="card accountCard" data-acct="usd-account">
-            <div class="bar"></div>
-            <div>
-              <div class="acctName">USD Account</div>
-              <div class="acctNum">12345678 • USD</div>
-            </div>
-            <div class="acctRight">
-              <div class="bal">USD $543.21</div>
-              <div class="avail">Available: USD $543.21</div>
+              <div class="bal">£6,543.21</div>
+              <div class="avail">Available: £6,543.21</div>
             </div>
           </div>
         </div>
@@ -657,7 +610,7 @@
             <div class="bar yellow"></div>
             <div>
               <div class="acctName">Business Saver</div>
-              <div class="acctNum">12345678 • Easy access</div>
+              <div class="acctNum">54060264 • Easy access</div>
             </div>
             <div class="acctRight">
               <div class="bal">£450.23</div>
@@ -685,7 +638,6 @@
             </div>
           </div>
         </div>
-
       </div>
 
       <div class="nav" role="navigation" aria-label="Bottom navigation">
@@ -739,7 +691,7 @@
                   <div style="color:rgba(11,31,38,.55); font-weight:900;">Awaiting you</div>
                 </div>
                 <div style="display:flex; justify-content:space-between; gap:10px;">
-                  <div><b>USD $500.00</b> • International transfer<br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">Payee: West Coast Tools</span></div>
+                  <div><b>£500.00</b> • Transfer to savings<br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">Reference: Reserve</span></div>
                   <div style="color:rgba(11,31,38,.55); font-weight:900;">Awaiting you</div>
                 </div>
               </div>
@@ -757,7 +709,7 @@
         </div>
       </div>
 
-      <!-- Chat overlay (same behavior as before) -->
+      <!-- Chat overlay -->
       <div class="overlay" id="chatOverlay" aria-hidden="true">
         <div class="chatSheet" aria-label="Cynergy Bank chat window">
           <button class="chatCloseFab" id="btnCloseChat" aria-label="Close chat">✕</button>
@@ -775,8 +727,12 @@
     const show = (el) => el.classList.add("show");
     const hide = (el) => el.classList.remove("show");
 
-    // Optional logo: put a URL here if you have one
-    const BRAND_LOGO_URL = ""; // e.g. "https://example.com/cynergy-logo.png";
+    // ✅ LOGO OPTIONS:
+    // 1) Set a URL here:
+    let BRAND_LOGO_URL = ""; // e.g. "https://your-bucket/cynergy-logo.png"
+    // 2) Or pass ?logo=https://... to override at runtime:
+    const qpLogo = new URLSearchParams(location.search).get("logo");
+    if (qpLogo) BRAND_LOGO_URL = qpLogo;
 
     function applyBrandLogo(url){
       const img = byId("brandLogoImg");
@@ -807,38 +763,23 @@
 
     function openChat(){
       show(byId("chatOverlay"));
-      // If you want to force-refresh the webchat each open:
+      // Optional refresh per open:
       // byId("chatFrame").src = "chat.html?ts=" + Date.now();
     }
 
-    // Mock data for account details
     const ACCOUNTS = {
       "business-current": {
         title: "Business Current",
         currency: "GBP",
-        balance: "£6,134.80",
-        available: "£6,134.80",
+        balance: "£6,543.21",
+        available: "£6,543.21",
         sortCode: "12-34-56",
-        accountNumber: "12345678",
-        iban: "GB12CYNB12345678123456",
+        accountNumber: "54060264",
+        iban: "GB12CYNB54060264540602",
         tx: [
           { name: "Card payment • Stationery", meta: "Today • Ref: OFFICE-221", amt: "-£46.20" },
           { name: "Incoming transfer • Client", meta: "Yesterday • Ref: INV-1042", amt: "+£1,850.00" },
           { name: "Direct debit • Utilities", meta: "Mon • Ref: ENERGY", amt: "-£212.35" }
-        ]
-      },
-      "usd-account": {
-        title: "USD Account",
-        currency: "USD",
-        balance: "USD $543.21",
-        available: "USD $543.21",
-        sortCode: "12-34-56",
-        accountNumber: "12345678",
-        iban: "GB12CYNB12345678123456",
-        tx: [
-          { name: "International transfer • Fee", meta: "Today • Ref: INTL-FEE", amt: "-USD $12.00" },
-          { name: "Incoming • Refund", meta: "Tue • Ref: REF-778", amt: "+USD $85.00" },
-          { name: "Card payment • Software", meta: "Sun • Ref: SAAS", amt: "-USD $29.99" }
         ]
       },
       "business-saver": {
@@ -847,7 +788,8 @@
         balance: "£450.23",
         available: "£450.23",
         sortCode: "12-34-56",
-        accountNumber: "12345678",
+        accountNumber: "54060264",
+        iban: "GB12CYNB54060264540602",
         interest: "3.85% AER (mock)",
         tx: [
           { name: "Transfer in • From Current", meta: "Yesterday • Ref: SAVINGS", amt: "+£250.00" },
@@ -898,18 +840,15 @@
     document.addEventListener("DOMContentLoaded", () => {
       applyBrandLogo(BRAND_LOGO_URL);
 
-      // Account taps
       document.querySelectorAll(".accountCard").forEach(card => {
         card.addEventListener("click", () => openAccount(card.getAttribute("data-acct")));
       });
 
-      // Close account sheet
       byId("btnCloseAccount").addEventListener("click", () => hide(byId("accountModal")));
       byId("accountModal").addEventListener("click", (e) => {
         if (e.target === byId("accountModal")) hide(byId("accountModal"));
       });
 
-      // Approvals
       const openApprovals = () => show(byId("approvalsModal"));
       byId("btnApprovals").addEventListener("click", openApprovals);
       byId("btnViewApprovals").addEventListener("click", openApprovals);
@@ -918,14 +857,12 @@
         if (e.target === byId("approvalsModal")) hide(byId("approvalsModal"));
       });
 
-      // Buttons (demo)
       byId("btnPay").addEventListener("click", () => openAccount("business-current"));
       byId("btnTransfer").addEventListener("click", () => openAccount("business-saver"));
       byId("btnAcctPay").addEventListener("click", () => alert("Demo: open payments flow"));
       byId("btnAcctStatement").addEventListener("click", () => alert("Demo: open statement"));
       byId("btnApproveAll").addEventListener("click", () => alert("Demo: approvals submitted"));
 
-      // Chat open/close
       byId("btnChatNow").addEventListener("click", openChat);
       byId("btnHeaderChat").addEventListener("click", openChat);
       byId("btnAcctChat").addEventListener("click", () => {
