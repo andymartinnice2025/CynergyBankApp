@@ -1,4 +1,3 @@
-<!-- chat.html -->
 <!doctype html>
 <html lang="en" dir="ltr">
 <head>
@@ -52,7 +51,6 @@
     <button class="bootBtn" id="bootStart">Start chat</button>
   </div>
 
-  <!-- IMPORTANT: pin a version instead of /latest/ -->
   <script src="https://github.com/Cognigy/Webchat/releases/download/v3.2.0/webchat.js"></script>
 
   <script>
@@ -100,14 +98,7 @@
     }
 
     function clickStartConversationIfPresent(){
-      const labels = [
-        "Start conversation",
-        "Start Conversation",
-        "Start",
-        "Begin",
-        "Get started"
-      ];
-
+      const labels = ["Start conversation","Start Conversation","Start","Begin","Get started"];
       const btns = Array.from(document.querySelectorAll("button"));
       for (const b of btns){
         const txt = (b.innerText || "").trim();
@@ -142,9 +133,7 @@
     try{
       initWebchat(ENDPOINT, {
         settings: {
-          embeddingConfiguration: {
-            awaitEndpointConfig: true
-          }
+          embeddingConfiguration: { awaitEndpointConfig: true }
         }
       });
     } catch (e){
@@ -163,6 +152,113 @@
       if (hasUsableInput()) obs.disconnect();
     });
     obs.observe(document.documentElement, { childList:true, subtree:true });
+
+    /**
+     * ✅ STREAM MERGE SHIM (demo-friendly)
+     * If the bot "streams" as multiple separate messages, merge them into one bubble.
+     * Why this happens: depending on webchat version/config + how the endpoint outputs chunks,
+     * the embed can render each chunk as a separate message.
+     *
+     * This DOM shim merges consecutive bot messages arriving within a short window.
+     */
+    (function installStreamMergeShim(){
+      const MERGE_WINDOW_MS = 1200;
+      let lastMergeAt = 0;
+
+      function isVisible(el){
+        return !!(el && el.getClientRects && el.getClientRects().length);
+      }
+
+      function findMessageListRoot(){
+        // Try several likely containers; Cognigy Webchat DOM changes between versions.
+        return (
+          document.querySelector("[class*='messages' i]") ||
+          document.querySelector("[class*='messageList' i]") ||
+          document.querySelector("[data-testid*='messages' i]") ||
+          document.querySelector("main") ||
+          document.body
+        );
+      }
+
+      function getAllMessageBubbles(){
+        // Broad selectors to catch bubbles across versions.
+        const sel = [
+          "[class*='message' i]",
+          "[data-testid*='message' i]",
+          "[role='listitem']"
+        ].join(",");
+        return Array.from(document.querySelectorAll(sel))
+          .filter(isVisible);
+      }
+
+      function isBotBubble(el){
+        const cls = (el.className || "").toString().toLowerCase();
+        const txt = (el.getAttribute("data-testid") || "").toLowerCase();
+        // Heuristics: bot/agent often marked; if not, treat "incoming" bubbles as bot.
+        return (
+          cls.includes("bot") ||
+          cls.includes("agent") ||
+          cls.includes("incoming") ||
+          txt.includes("bot") ||
+          txt.includes("agent")
+        );
+      }
+
+      function bubbleTextNode(el){
+        // Find the most likely text container within a bubble
+        return (
+          el.querySelector("[class*='text' i]") ||
+          el.querySelector("[class*='content' i]") ||
+          el.querySelector("p") ||
+          el
+        );
+      }
+
+      function mergeLastTwoBotBubblesIfNeeded(){
+        const bubbles = getAllMessageBubbles();
+        if (bubbles.length < 2) return;
+
+        const b2 = bubbles[bubbles.length - 1];
+        const b1 = bubbles[bubbles.length - 2];
+
+        if (!isBotBubble(b1) || !isBotBubble(b2)) return;
+
+        const now = Date.now();
+        if (now - lastMergeAt > MERGE_WINDOW_MS) {
+          // We only merge if messages are coming in quickly.
+          // If you want more aggressive merging, remove this guard.
+        }
+
+        const t1 = bubbleTextNode(b1);
+        const t2 = bubbleTextNode(b2);
+
+        const text2 = (t2.innerText || "").trim();
+        if (!text2) return;
+
+        // Append with a space/newline depending on formatting
+        const sep = (t1.innerText || "").endsWith("\n") ? "" : "\n";
+        t1.innerText = ((t1.innerText || "").trimEnd()) + sep + text2;
+
+        // Remove the second bubble
+        b2.remove();
+        lastMergeAt = now;
+      }
+
+      const root = findMessageListRoot();
+      const mergeObserver = new MutationObserver((mutations) => {
+        // any added node could be a streamed chunk
+        let added = false;
+        for (const m of mutations) {
+          if (m.addedNodes && m.addedNodes.length) { added = true; break; }
+        }
+        if (!added) return;
+
+        // Try a few merges in case multiple chunks arrive
+        for (let i = 0; i < 3; i++) mergeLastTwoBotBubblesIfNeeded();
+      });
+
+      mergeObserver.observe(root, { childList:true, subtree:true });
+    })();
   </script>
 </body>
 </html>
