@@ -3,23 +3,24 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Cynergy Bank • Business Accounts</title>
-
+  <title>Cynergy Bank • Mock App</title>
   <style>
     :root{
-      --cy-bg:#EAF3F2;
-      --cy-card:#FFFFFF;
+      --bg:#EAF3F2;
+      --card:#fff;
 
-      --cy-deep:#083A44;
-      --cy-deep-2:#062E36;
-      --cy-teal:#00B7A7;
-      --cy-lime:#F3E600;
+      --deep:#083A44;
+      --deep2:#062E36;
+      --teal:#00B7A7;
+      --lime:#F3E600;
 
       --text:#0B1F26;
       --muted:#5E6E73;
 
-      --shadow:0 26px 70px rgba(0,0,0,.28);
-      --shadow-soft:0 14px 34px rgba(6,46,54,.14);
+      --b:rgba(0,0,0,.06);
+      --shadow:0 14px 34px rgba(6,46,54,.12);
+      --shadow2:0 26px 70px rgba(0,0,0,.28);
+
       --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
     }
 
@@ -47,28 +48,26 @@
       height:100%;
       border-radius:30px;
       overflow:hidden;
-      background:var(--cy-bg);
+      background:var(--bg);
       position:relative;
       display:flex;
       flex-direction:column;
     }
 
+    /* Header */
     .header{
       padding:18px 18px 14px;
       color:#fff;
-      position:relative;
       background:
         radial-gradient(900px 280px at 20% 0%, rgba(255,255,255,.18), rgba(255,255,255,0) 60%),
-        linear-gradient(180deg, var(--cy-deep), var(--cy-deep-2));
+        linear-gradient(180deg, var(--deep), var(--deep2));
       box-shadow:0 10px 30px rgba(0,0,0,.22);
     }
-
     .topRow{
       display:grid;
       grid-template-columns: 1fr auto 1fr;
       align-items:center;
       gap:10px;
-      margin-bottom:10px;
       font-size:12px;
       opacity:.96;
     }
@@ -92,18 +91,16 @@
       font-size:11px;
       display:grid; place-items:center;
       font-weight:1000;
-      border:2px solid var(--cy-deep);
+      border:2px solid var(--deep);
     }
 
     .logoCenter{
       justify-self:center;
       display:flex;
       align-items:center;
-      justify-content:center;
       gap:10px;
       min-width:220px;
     }
-
     .brandMark{
       width:34px;height:34px;
       border-radius:10px;
@@ -111,16 +108,12 @@
       background: rgba(255,255,255,.10);
       border:1px solid rgba(255,255,255,.18);
       overflow:hidden;
+      cursor:pointer;
     }
     .brandLogoImg{ width:100%; height:100%; object-fit:contain; display:none; }
     .brandMark.has-image svg{ display:none; }
 
-    .brandText{
-      display:flex;
-      flex-direction:column;
-      line-height:1.05;
-      text-align:left;
-    }
+    .brandText{ display:flex; flex-direction:column; line-height:1.05; text-align:left; }
     .brandText .name{ font-weight:1000; font-size:14px; letter-spacing:.2px; }
     .brandText .tag{ font-weight:900; font-size:11px; opacity:.88; }
 
@@ -129,20 +122,10 @@
       align-items:flex-end;
       justify-content:space-between;
       gap:10px;
-      margin-top:4px;
+      margin-top:8px;
     }
-    .h1{
-      font-size:26px;
-      font-weight:1000;
-      margin:0;
-      letter-spacing:-.3px;
-    }
-    .sub{
-      margin-top:4px;
-      font-size:12.5px;
-      opacity:.9;
-      font-weight:800;
-    }
+    .h1{ font-size:26px; font-weight:1100; margin:0; letter-spacing:-.3px; }
+    .sub{ margin-top:4px; font-size:12.5px; opacity:.9; font-weight:800; }
 
     .pillStatus{
       display:inline-flex;
@@ -157,11 +140,7 @@
       backdrop-filter: blur(10px);
       white-space:nowrap;
     }
-    .dot{
-      width:10px;height:10px;border-radius:999px;
-      background:#43d17b;
-      box-shadow:0 0 0 3px rgba(67,209,123,.18);
-    }
+    .dot{ width:10px;height:10px;border-radius:999px; background:#43d17b; box-shadow:0 0 0 3px rgba(67,209,123,.18); }
 
     .summaryWrap{
       margin-top:14px;
@@ -171,121 +150,116 @@
       padding:14px;
       backdrop-filter: blur(10px);
     }
-    .sumTop{
-      display:flex;
-      align-items:baseline;
-      justify-content:space-between;
-      gap:12px;
-    }
+    .sumTop{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
     .sumLabel{ font-weight:900; font-size:12px; opacity:.85; }
-    .sumValue{
-      font-size:36px;
-      font-weight:1100;
-      letter-spacing:-.6px;
-    }
+    .sumValue{ font-size:34px; font-weight:1100; letter-spacing:-.6px; }
 
-    .sumGrid{
-      display:grid;
-      grid-template-columns: 1fr 136px;
-      gap:14px;
-      margin-top:10px;
-      align-items:center;
-    }
-    .legend{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
+    .sumGrid{ display:grid; grid-template-columns: 1fr 120px; gap:14px; margin-top:10px; align-items:center; }
+    .legend{ display:flex; flex-direction:column; gap:10px; }
     .legRow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      font-size:13px;
-      font-weight:900;
-      color:rgba(255,255,255,.92);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      font-size:13px; font-weight:900; color:rgba(255,255,255,.92);
     }
     .legLeft{ display:flex; align-items:center; gap:10px; }
-    .swatch{
-      width:10px;height:10px;border-radius:999px;
-      background: var(--cy-teal);
-      box-shadow:0 0 0 3px rgba(0,183,167,.18);
-      flex:0 0 auto;
-    }
-    .swatch.yellow{
-      background: var(--cy-lime);
-      box-shadow:0 0 0 3px rgba(243,230,0,.18);
-    }
+    .swatch{ width:10px;height:10px;border-radius:999px; background: var(--teal); box-shadow:0 0 0 3px rgba(0,183,167,.18); }
+    .swatch.yellow{ background: var(--lime); box-shadow:0 0 0 3px rgba(243,230,0,.18); }
     .legSmall{ font-size:12px; opacity:.86; font-weight:900; }
 
     .donut{
-      width:136px;height:136px;border-radius:999px;
-      background:
-        conic-gradient(var(--cy-teal) 0 310deg, var(--cy-lime) 310deg 340deg, rgba(255,255,255,.22) 340deg 360deg);
-      display:grid;
-      place-items:center;
-      position:relative;
+      width:120px;height:120px;border-radius:999px;
+      background: conic-gradient(var(--teal) 0 315deg, var(--lime) 315deg 345deg, rgba(255,255,255,.22) 345deg 360deg);
+      display:grid; place-items:center; position:relative;
       box-shadow:0 18px 40px rgba(0,0,0,.18);
     }
     .donut::after{
       content:"";
-      width:102px;height:102px;border-radius:999px;
+      width:88px;height:88px;border-radius:999px;
       background: linear-gradient(180deg, rgba(6,46,54,.92), rgba(6,46,54,.84));
       border:1px solid rgba(255,255,255,.18);
       position:absolute;
     }
-    .donut span{
-      position:relative;
-      z-index:1;
-      font-weight:1000;
-      font-size:30px;
-      opacity:.95;
-    }
+    .donut span{ position:relative; z-index:1; font-weight:1100; font-size:26px; opacity:.95; }
 
+    /* Content */
     .content{
       flex:1;
       overflow:auto;
-      padding:16px 16px 92px;
+      padding:16px 16px 104px;
+    }
+
+    .tabs{
+      display:flex;
+      gap:10px;
+      margin:2px 2px 12px;
+    }
+    .tab{
+      flex:1;
+      border-radius:16px;
+      padding:10px 12px;
+      font-weight:1000;
+      font-size:13px;
+      border:1px solid rgba(0,0,0,.08);
+      background:#fff;
+      color: rgba(11,31,38,.70);
+      cursor:pointer;
+      user-select:none;
+      box-shadow:0 10px 22px rgba(0,0,0,.06);
+    }
+    .tab.active{
+      background: rgba(0,183,167,.12);
+      border:1px solid rgba(0,183,167,.18);
+      color: rgba(6,46,54,.95);
+      box-shadow:none;
     }
 
     .card{
-      background:var(--cy-card);
-      border:1px solid rgba(0,0,0,.06);
+      background:var(--card);
+      border:1px solid var(--b);
       border-radius:22px;
-      box-shadow: 0 14px 34px rgba(6,46,54,.12);
+      box-shadow: var(--shadow);
     }
 
-    .approvals{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:14px 14px;
-      margin-top:14px;
-      cursor:pointer;
-      user-select:none;
+    .rowCard{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding:14px;
+      cursor:pointer; user-select:none;
     }
-    .apLeft{ display:flex; align-items:center; gap:12px; }
-    .apCount{
+    .pillCount{
       width:30px;height:30px;border-radius:999px;
       background: rgba(0,183,167,.12);
       border:1px solid rgba(0,183,167,.20);
       display:grid; place-items:center;
-      font-weight:1100;
-      color: var(--cy-deep);
+      font-weight:1100; color: var(--deep);
     }
-    .apTitle{ font-weight:1000; color: rgba(11,31,38,.92); }
     .chev{ font-weight:1100; color: rgba(11,31,38,.45); font-size:18px; }
 
     .sectionTitle{
-      font-weight:1000;
+      font-weight:1100;
       color: rgba(11,31,38,.55);
       font-size:13px;
       margin:18px 2px 10px;
       display:flex;
       align-items:center;
       justify-content:space-between;
+      gap:10px;
     }
+
+    .search{
+      display:flex; gap:10px; align-items:center;
+      background:#fff;
+      border:1px solid rgba(0,0,0,.08);
+      border-radius:18px;
+      padding:12px 12px;
+      box-shadow:0 10px 22px rgba(0,0,0,.06);
+    }
+    .search input{
+      width:100%;
+      border:none; outline:none;
+      font-weight:900;
+      font-size:13px;
+      color: rgba(11,31,38,.88);
+    }
+    .search .ico{ opacity:.65; }
 
     .accountList{ display:grid; gap:12px; }
     .accountCard{
@@ -297,104 +271,35 @@
       cursor:pointer;
       user-select:none;
     }
-    .bar{ width:4px;height:44px;border-radius:99px; background: var(--cy-teal); }
-    .bar.yellow{ background: var(--cy-lime); }
-
+    .bar{ width:4px;height:44px;border-radius:99px; background: var(--teal); }
+    .bar.yellow{ background: var(--lime); }
     .acctName{ font-weight:1100; color: rgba(11,31,38,.92); }
     .acctNum{ font-weight:900; font-size:12px; color: rgba(11,31,38,.55); margin-top:2px; }
-
-    .acctRight{
-      text-align:right;
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-      min-width:110px;
-    }
+    .acctRight{ text-align:right; display:flex; flex-direction:column; gap:2px; min-width:120px; }
     .bal{ font-weight:1100; color: rgba(11,31,38,.92); font-size:16px; }
     .avail{ font-weight:900; color: rgba(11,31,38,.55); font-size:12px; }
 
-    .miniRow{
-      margin-top:12px;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
-    }
-    .mini{ padding:14px; }
-    .miniTitle{ font-weight:1000; color: rgba(11,31,38,.86); }
-    .miniSub{ margin-top:4px; font-weight:900; font-size:12px; color: rgba(11,31,38,.55); line-height:1.35; }
     .btnRow{ display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
-
     .btn{
-      appearance:none;
-      border:none;
-      cursor:pointer;
-      border-radius:16px;
-      padding:12px 14px;
-      font-weight:1000;
-      font-size:13px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
+      appearance:none; border:none; cursor:pointer;
+      border-radius:16px; padding:12px 14px;
+      font-weight:1000; font-size:13px;
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
       user-select:none;
     }
-    .btn.primary{
-      background: linear-gradient(180deg, var(--cy-teal), #009C8E);
-      color:#fff;
-      box-shadow: 0 14px 28px rgba(0,0,0,.12);
-    }
-    .btn.chat{
-      background: linear-gradient(180deg, #29D48C, #0FAE6A);
-      color:#fff;
-      box-shadow: 0 14px 28px rgba(0,0,0,.12);
-    }
-    .btn.ghost{
-      background:#fff;
-      border:1px solid rgba(0,0,0,.08);
-      color: rgba(11,31,38,.82);
-      box-shadow:none;
-    }
+    .btn.primary{ background: linear-gradient(180deg, var(--teal), #009C8E); color:#fff; box-shadow:0 14px 28px rgba(0,0,0,.12); }
+    .btn.chat{ background: linear-gradient(180deg, #29D48C, #0FAE6A); color:#fff; box-shadow:0 14px 28px rgba(0,0,0,.12); }
+    .btn.ghost{ background:#fff; border:1px solid rgba(0,0,0,.08); color: rgba(11,31,38,.82); box-shadow:none; }
 
-    .nav{
-      position:absolute;
-      left:0;right:0;bottom:0;
-      background: rgba(255,255,255,.92);
-      border-top:1px solid rgba(0,0,0,.06);
-      padding:10px 10px 14px;
-      display:flex;
-      justify-content:space-around;
-      z-index:10;
-      backdrop-filter: blur(10px);
-    }
-    .navItem{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:6px;
-      font-size:11px;
-      font-weight:900;
-      color: rgba(11,31,38,.45);
-      min-width:64px;
-      user-select:none;
-    }
-    .navItem .ico{ width:28px;height:28px; display:grid;place-items:center; border-radius:12px; }
-    .navItem.active{ color: var(--cy-teal); }
-    .navItem.active .ico{
-      background: rgba(0,183,167,.12);
-      border:1px solid rgba(0,183,167,.16);
-      color: var(--cy-teal);
-    }
-
+    /* Sheets */
     .modal, .overlay{
-      position:absolute;
-      inset:0;
+      position:absolute; inset:0;
       background: rgba(6,46,54,.55);
       display:none;
       z-index:50;
       padding:12px;
     }
     .show{ display:block; }
-
     .sheet{
       position:absolute;
       left:12px; right:12px;
@@ -405,7 +310,6 @@
       box-shadow: 0 30px 90px rgba(0,0,0,.35);
       overflow:hidden;
     }
-
     .topBar{
       padding:14px;
       border-bottom:1px solid rgba(0,0,0,.06);
@@ -414,58 +318,39 @@
       align-items:center;
       background: rgba(0,183,167,.08);
     }
-    .topBar .h{
-      font-weight:1100;
-      font-size:16px;
-      color: rgba(11,31,38,.92);
-    }
+    .topBar .h{ font-weight:1100; font-size:16px; color: rgba(11,31,38,.92); }
     .sheetBody{ padding:14px; }
 
     .kv{
-      display:grid;
-      grid-template-columns: 1fr auto;
-      gap:10px;
-      padding:10px 0;
+      display:grid; grid-template-columns: 1fr auto;
+      gap:10px; padding:10px 0;
       border-bottom:1px solid rgba(0,0,0,.06);
-      font-weight:900;
-      color: rgba(11,31,38,.80);
+      font-weight:900; color: rgba(11,31,38,.80);
       font-size:13px;
     }
     .kv:last-child{ border-bottom:none; }
 
-    .txTitle{
-      margin-top:14px;
-      font-weight:1100;
-      color: rgba(11,31,38,.86);
-      font-size:13px;
-    }
-    .tx{
-      margin-top:10px;
-      border:1px solid rgba(0,0,0,.06);
-      border-radius:18px;
-      overflow:hidden;
-    }
+    .txTitle{ margin-top:14px; font-weight:1100; color: rgba(11,31,38,.86); font-size:13px; }
+    .tx{ margin-top:10px; border:1px solid rgba(0,0,0,.06); border-radius:18px; overflow:hidden; }
     .txRow{
-      display:grid;
-      grid-template-columns: 1fr auto;
-      gap:10px;
-      padding:12px 12px;
-      background:#fff;
+      display:grid; grid-template-columns: 1fr auto;
+      gap:10px; padding:12px;
       border-bottom:1px solid rgba(0,0,0,.06);
       font-size:13px;
+      background:#fff;
     }
     .txRow:last-child{ border-bottom:none; }
-    .txMain{ font-weight:1000; color: rgba(11,31,38,.90); }
+    .txMain{ font-weight:1100; color: rgba(11,31,38,.92); }
     .txMeta{ font-weight:900; color: rgba(11,31,38,.55); font-size:12px; margin-top:2px; }
     .txAmt{ font-weight:1100; }
     .neg{ color:#D62D2D; }
     .pos{ color:#0E8A5B; }
 
+    /* Chat overlay */
     .chatSheet{
       position:absolute;
       left:12px; right:12px;
-      top:62px;
-      bottom:62px;
+      top:62px; bottom:62px;
       border-radius:26px;
       background:#fff;
       border:1px solid rgba(255,255,255,.65);
@@ -474,26 +359,11 @@
       display:flex;
       flex-direction:column;
     }
-    .chatMount{
-      flex:1;
-      min-height:0;
-      background:#fff;
-      position:relative;
-      overflow:hidden;
-    }
-    #chatFrame{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      border:0;
-      display:block;
-      background:#fff;
-    }
+    .chatMount{ flex:1; min-height:0; position:relative; overflow:hidden; background:#fff; }
+    #chatFrame{ position:absolute; inset:0; width:100%; height:100%; border:0; display:block; background:#fff; }
     .chatCloseFab{
       position:absolute;
-      top:12px;
-      left:12px;
+      top:12px; left:12px;
       width:44px;height:44px;
       border-radius:16px;
       border:1px solid rgba(0,0,0,.08);
@@ -505,6 +375,32 @@
       display:grid;
       place-items:center;
     }
+
+    /* Bottom nav */
+    .nav{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      background: rgba(255,255,255,.92);
+      border-top:1px solid rgba(0,0,0,.06);
+      padding:10px 10px 14px;
+      display:flex;
+      justify-content:space-around;
+      z-index:10;
+      backdrop-filter: blur(10px);
+    }
+    .navItem{
+      display:flex; flex-direction:column; align-items:center;
+      gap:6px;
+      font-size:11px;
+      font-weight:1000;
+      color: rgba(11,31,38,.45);
+      min-width:64px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .navItem .ico{ width:28px;height:28px; display:grid;place-items:center; border-radius:12px; }
+    .navItem.active{ color: var(--teal); }
+    .navItem.active .ico{ background: rgba(0,183,167,.12); border:1px solid rgba(0,183,167,.16); color: var(--teal); }
   </style>
 </head>
 
@@ -517,7 +413,7 @@
           <div class="time">9:41</div>
 
           <div class="logoCenter" title="Cynergy Bank">
-            <div class="brandMark" aria-label="Cynergy Bank">
+            <div class="brandMark" id="brandMark" title="Tip: add ?logo=https://... to the URL">
               <img id="brandLogoImg" class="brandLogoImg" alt="Cynergy Bank Logo" />
               <svg id="brandLogoFallback" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path d="M10 40c10-16 24-22 44-24v10c-18 2-26 8-34 20H10z" fill="#00B7A7"/>
@@ -527,13 +423,13 @@
 
             <div class="brandText">
               <div class="name">Cynergy Bank</div>
-              <div class="tag">Business • Accounts</div>
+              <div class="tag">Business • Mock Demo</div>
             </div>
           </div>
 
           <div class="rightIcons">
             <div class="badge" id="btnHeaderChat" title="Support chat">💬</div>
-            <div class="badge" title="Notifications">
+            <div class="badge" id="btnAlerts" title="Alerts">
               🔔
               <div class="badgeDot">3</div>
             </div>
@@ -542,13 +438,13 @@
 
         <div class="headline">
           <div>
-            <div class="h1">All accounts</div>
-            <div class="sub">Welcome back, <b>Andy Martin</b> • Updated just now</div>
+            <div class="h1">Hello Andy</div>
+            <div class="sub"><b>Andy Martin</b> • Account <b>54060264</b></div>
           </div>
           <div class="pillStatus"><span class="dot"></span> Support available</div>
         </div>
 
-        <div class="summaryWrap" aria-label="Accounts summary">
+        <div class="summaryWrap">
           <div class="sumTop">
             <div class="sumLabel">Total balance</div>
             <div class="sumValue">£6,993.44</div>
@@ -567,100 +463,133 @@
               <div class="legSmall">Customise • Preferences</div>
             </div>
 
-            <div class="donut" aria-label="Balance donut"><span>£</span></div>
+            <div class="donut"><span>£</span></div>
           </div>
         </div>
       </div>
 
       <div class="content">
-        <div class="card approvals" id="btnApprovals">
-          <div class="apLeft">
-            <div class="apCount">6</div>
-            <div class="apTitle">Approvals needed</div>
+
+        <div class="tabs" role="tablist" aria-label="Sections">
+          <button class="tab active" id="tabAccounts">Accounts</button>
+          <button class="tab" id="tabPayments">Payments</button>
+          <button class="tab" id="tabHelp">Help</button>
+        </div>
+
+        <!-- ACCOUNTS -->
+        <div id="viewAccounts">
+          <div class="card rowCard" id="btnApprovals">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <div class="pillCount">6</div>
+              <div style="font-weight:1100; color:rgba(11,31,38,.92);">Approvals needed</div>
+            </div>
+            <div class="chev">›</div>
           </div>
-          <div class="chev">›</div>
-        </div>
 
-        <div class="sectionTitle">
-          <span>CURRENT</span>
-          <span style="font-weight:900;color:rgba(11,31,38,.45);font-size:12px;">Tap an account</span>
-        </div>
-
-        <div class="accountList">
-          <div class="card accountCard" data-acct="business-current">
-            <div class="bar"></div>
-            <div>
-              <div class="acctName">Business Current</div>
-              <div class="acctNum">54060264 • Sort code 12-34-56</div>
-            </div>
-            <div class="acctRight">
-              <div class="bal">£6,543.21</div>
-              <div class="avail">Available: £6,543.21</div>
-            </div>
+          <div class="sectionTitle">
+            <span>Search transactions</span>
+            <span style="font-size:12px; font-weight:900; color:rgba(11,31,38,.45);">demo filter</span>
           </div>
-        </div>
-
-        <div class="sectionTitle" style="margin-top:18px;">
-          <span>SAVINGS</span>
-          <span></span>
-        </div>
-
-        <div class="accountList">
-          <div class="card accountCard" data-acct="business-saver">
-            <div class="bar yellow"></div>
-            <div>
-              <div class="acctName">Business Saver</div>
-              <div class="acctNum">54060264 • Easy access</div>
-            </div>
-            <div class="acctRight">
-              <div class="bal">£450.23</div>
-              <div class="avail">Available: £450.23</div>
-            </div>
+          <div class="search">
+            <div class="ico">🔎</div>
+            <input id="txSearch" placeholder="Try: utilities, client, interest…" autocomplete="off" />
           </div>
-        </div>
 
-        <div class="miniRow">
-          <div class="card mini">
-            <div class="miniTitle">Make a payment</div>
-            <div class="miniSub">Send money to a payee, approve pending payments, or schedule a transfer.</div>
-            <div class="btnRow">
-              <button class="btn primary" id="btnPay">➜ Pay</button>
-              <button class="btn ghost" id="btnTransfer">⇄ Transfer</button>
+          <div class="sectionTitle"><span>CURRENT</span><span></span></div>
+          <div class="accountList">
+            <div class="card accountCard" data-acct="business-current">
+              <div class="bar"></div>
+              <div>
+                <div class="acctName">Business Current</div>
+                <div class="acctNum">54060264 • Sort code 12-34-56</div>
+              </div>
+              <div class="acctRight">
+                <div class="bal">£6,543.21</div>
+                <div class="avail">Available: £6,543.21</div>
+              </div>
             </div>
           </div>
 
-          <div class="card mini">
-            <div class="miniTitle">Need help?</div>
-            <div class="miniSub">Ask about balances, transactions, approvals, or card issues in the support chat.</div>
-            <div class="btnRow">
-              <button class="btn chat" id="btnChatNow">💬 Open chat</button>
-              <button class="btn ghost" id="btnViewApprovals">✓ View approvals</button>
+          <div class="sectionTitle"><span>SAVINGS</span><span></span></div>
+          <div class="accountList">
+            <div class="card accountCard" data-acct="business-saver">
+              <div class="bar yellow"></div>
+              <div>
+                <div class="acctName">Business Saver</div>
+                <div class="acctNum">54060264 • Easy access</div>
+              </div>
+              <div class="acctRight">
+                <div class="bal">£450.23</div>
+                <div class="avail">Available: £450.23</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sectionTitle"><span>Quick actions</span><span></span></div>
+          <div class="btnRow">
+            <button class="btn primary" id="btnPay">➜ Pay</button>
+            <button class="btn ghost" id="btnTransfer">⇄ Transfer</button>
+            <button class="btn chat" id="btnChatNow">💬 Open chat</button>
+          </div>
+        </div>
+
+        <!-- PAYMENTS -->
+        <div id="viewPayments" style="display:none;">
+          <div class="card" style="padding:14px;">
+            <div style="font-weight:1100; color:rgba(11,31,38,.92);">Payments (mock)</div>
+            <div style="margin-top:6px; font-weight:900; color:rgba(11,31,38,.55); font-size:12px; line-height:1.35;">
+              Demo flows only — show approval checks, fraud prompts, and beneficiary validation.
+            </div>
+
+            <div class="btnRow" style="margin-top:12px;">
+              <button class="btn primary" id="btnNewPayment">➜ New payment</button>
+              <button class="btn ghost" id="btnBeneficiaries">👥 Beneficiaries</button>
+              <button class="btn chat" id="btnPaymentsChat">💬 Ask in chat</button>
             </div>
           </div>
         </div>
+
+        <!-- HELP -->
+        <div id="viewHelp" style="display:none;">
+          <div class="card" style="padding:14px;">
+            <div style="font-weight:1100; color:rgba(11,31,38,.92);">Help & Support</div>
+            <div style="margin-top:8px; display:grid; gap:10px; font-size:13px;">
+              <div><b>Customer</b>: Andy Martin</div>
+              <div><b>Account</b>: 54060264</div>
+              <div style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px; line-height:1.35;">
+                Tip: Use the chat to demo: “Show my balance”, “List recent transactions”, “I need to upload a document”, “Approve payment”.
+              </div>
+            </div>
+
+            <div class="btnRow" style="margin-top:12px;">
+              <button class="btn chat" id="btnHelpChat">💬 Open chat</button>
+              <button class="btn ghost" id="btnShowAlerts">🔔 View alerts</button>
+              <button class="btn ghost" id="btnShowApprovals">✓ View approvals</button>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      <div class="nav" role="navigation" aria-label="Bottom navigation">
-        <div class="navItem active"><div class="ico">👛</div><div>Accounts</div></div>
-        <div class="navItem"><div class="ico">⇄</div><div>Payments</div></div>
-        <div class="navItem"><div class="ico">⚙️</div><div>Settings</div></div>
-        <div class="navItem"><div class="ico">☰</div><div>More</div></div>
+      <!-- Bottom nav -->
+      <div class="nav">
+        <div class="navItem active" id="navAccounts"><div class="ico">👛</div><div>Accounts</div></div>
+        <div class="navItem" id="navPayments"><div class="ico">⇄</div><div>Payments</div></div>
+        <div class="navItem" id="navHelp"><div class="ico">💬</div><div>Help</div></div>
+        <div class="navItem" id="navMore"><div class="ico">☰</div><div>More</div></div>
       </div>
 
-      <!-- Account details modal -->
+      <!-- Account sheet -->
       <div class="modal" id="accountModal" aria-hidden="true">
         <div class="sheet">
           <div class="topBar">
             <div class="h" id="acctTitle">Account</div>
             <button class="btn ghost" id="btnCloseAccount">✕</button>
           </div>
-
           <div class="sheetBody">
             <div id="acctKvs"></div>
-
             <div class="txTitle">Recent transactions</div>
             <div class="tx" id="acctTx"></div>
-
             <div class="btnRow" style="margin-top:14px;">
               <button class="btn primary" id="btnAcctPay">➜ Pay</button>
               <button class="btn ghost" id="btnAcctStatement">📄 Statement</button>
@@ -670,16 +599,15 @@
         </div>
       </div>
 
-      <!-- Approvals modal -->
+      <!-- Approvals sheet -->
       <div class="modal" id="approvalsModal" aria-hidden="true">
         <div class="sheet">
           <div class="topBar">
             <div class="h">Approvals needed</div>
             <button class="btn ghost" id="btnCloseApprovals">✕</button>
           </div>
-
           <div class="sheetBody">
-            <div class="card" style="padding:14px; box-shadow:none; border:1px solid rgba(0,0,0,.06); border-radius:18px;">
+            <div class="card" style="padding:14px; box-shadow:none;">
               <div style="font-weight:1100; color:rgba(11,31,38,.92);">Pending approvals (mock)</div>
               <div style="margin-top:10px; display:grid; gap:10px; font-size:13px;">
                 <div style="display:flex; justify-content:space-between; gap:10px;">
@@ -695,12 +623,10 @@
                   <div style="color:rgba(11,31,38,.55); font-weight:900;">Awaiting you</div>
                 </div>
               </div>
-
               <div class="btnRow" style="margin-top:14px;">
                 <button class="btn primary" id="btnApproveAll">✓ Approve all</button>
                 <button class="btn chat" id="btnApprovalsChat">💬 Ask in chat</button>
               </div>
-
               <div style="margin-top:10px; font-size:12px; color:rgba(11,31,38,.55); font-weight:900; line-height:1.35;">
                 Demo only — approvals do not perform real actions.
               </div>
@@ -709,9 +635,32 @@
         </div>
       </div>
 
+      <!-- Alerts sheet -->
+      <div class="modal" id="alertsModal" aria-hidden="true">
+        <div class="sheet">
+          <div class="topBar">
+            <div class="h">Alerts</div>
+            <button class="btn ghost" id="btnCloseAlerts">✕</button>
+          </div>
+          <div class="sheetBody">
+            <div class="card" style="padding:14px; box-shadow:none;">
+              <div style="display:grid; gap:10px; font-size:13px;">
+                <div><b>Payment pending approval</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">£1,200.00 to Bright Office Ltd</span></div>
+                <div><b>New beneficiary added</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">Review details before paying</span></div>
+                <div><b>Statement ready</b><br><span style="color:rgba(11,31,38,.55); font-weight:900; font-size:12px;">Monthly statement available</span></div>
+              </div>
+              <div class="btnRow" style="margin-top:14px;">
+                <button class="btn chat" id="btnAlertsChat">💬 Ask in chat</button>
+                <button class="btn ghost" id="btnAlertsClose2">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Chat overlay -->
       <div class="overlay" id="chatOverlay" aria-hidden="true">
-        <div class="chatSheet" aria-label="Cynergy Bank chat window">
+        <div class="chatSheet">
           <button class="chatCloseFab" id="btnCloseChat" aria-label="Close chat">✕</button>
           <div class="chatMount">
             <iframe id="chatFrame" title="Cynergy Bank Support Chat" src="chat.html"></iframe>
@@ -727,50 +676,38 @@
     const show = (el) => el.classList.add("show");
     const hide = (el) => el.classList.remove("show");
 
-    // ✅ LOGO OPTIONS:
-    // 1) Set a URL here:
-    let BRAND_LOGO_URL = ""; // e.g. "https://your-bucket/cynergy-logo.png"
-    // 2) Or pass ?logo=https://... to override at runtime:
+    // ✅ Logo: set here OR use ?logo=https://... for demos
+    let BRAND_LOGO_URL = "";
     const qpLogo = new URLSearchParams(location.search).get("logo");
     if (qpLogo) BRAND_LOGO_URL = qpLogo;
 
     function applyBrandLogo(url){
       const img = byId("brandLogoImg");
       const svg = byId("brandLogoFallback");
-      const mark = img?.closest(".brandMark");
+      const mark = byId("brandMark");
 
       if(!url){
-        if(img) img.style.display = "none";
-        if(svg) svg.style.display = "block";
-        if(mark) mark.classList.remove("has-image");
+        img.style.display = "none";
+        svg.style.display = "block";
+        mark.classList.remove("has-image");
         return;
       }
 
       img.style.display = "block";
       img.src = url;
-
-      img.onload = () => {
-        if(svg) svg.style.display = "none";
-        if(mark) mark.classList.add("has-image");
-      };
-
-      img.onerror = () => {
-        img.style.display = "none";
-        if(svg) svg.style.display = "block";
-        if(mark) mark.classList.remove("has-image");
-      };
+      img.onload = () => { svg.style.display = "none"; mark.classList.add("has-image"); };
+      img.onerror = () => { img.style.display = "none"; svg.style.display = "block"; mark.classList.remove("has-image"); };
     }
 
     function openChat(){
       show(byId("chatOverlay"));
-      // Optional refresh per open:
+      // Optional: force-refresh chat each open
       // byId("chatFrame").src = "chat.html?ts=" + Date.now();
     }
 
     const ACCOUNTS = {
       "business-current": {
         title: "Business Current",
-        currency: "GBP",
         balance: "£6,543.21",
         available: "£6,543.21",
         sortCode: "12-34-56",
@@ -784,7 +721,6 @@
       },
       "business-saver": {
         title: "Business Saver",
-        currency: "GBP",
         balance: "£450.23",
         available: "£450.23",
         sortCode: "12-34-56",
@@ -799,32 +735,31 @@
       }
     };
 
+    const ALL_TX = Object.values(ACCOUNTS).flatMap(a => a.tx.map(t => ({...t, account:a.title})));
+
     function moneyClass(amt){
       return (amt || "").trim().startsWith("-") ? "neg" : "pos";
     }
 
-    function openAccount(acctKey){
-      const data = ACCOUNTS[acctKey];
+    function openAccount(key){
+      const data = ACCOUNTS[key];
       if(!data) return;
 
       byId("acctTitle").textContent = data.title;
-
-      const kvs = [];
-      kvs.push({ k: "Balance", v: data.balance });
-      kvs.push({ k: "Available", v: data.available });
-      kvs.push({ k: "Account number", v: data.accountNumber });
-      kvs.push({ k: "Sort code", v: data.sortCode });
-      kvs.push({ k: "IBAN", v: data.iban });
-      if(data.interest) kvs.push({ k: "Interest", v: data.interest });
+      const kvs = [
+        { k:"Balance", v:data.balance },
+        { k:"Available", v:data.available },
+        { k:"Account number", v:data.accountNumber },
+        { k:"Sort code", v:data.sortCode },
+        { k:"IBAN", v:data.iban },
+      ];
+      if(data.interest) kvs.push({ k:"Interest", v:data.interest });
 
       byId("acctKvs").innerHTML = kvs.map(x => `
-        <div class="kv">
-          <div>${x.k}</div>
-          <div style="color:rgba(11,31,38,.92)">${x.v}</div>
-        </div>
+        <div class="kv"><div>${x.k}</div><div style="color:rgba(11,31,38,.92)">${x.v}</div></div>
       `).join("");
 
-      byId("acctTx").innerHTML = (data.tx || []).map(t => `
+      byId("acctTx").innerHTML = data.tx.map(t => `
         <div class="txRow">
           <div>
             <div class="txMain">${t.name}</div>
@@ -837,46 +772,95 @@
       show(byId("accountModal"));
     }
 
+    function setActiveTab(which){
+      const set = (id, on) => byId(id).classList.toggle("active", on);
+      set("tabAccounts", which==="accounts");
+      set("tabPayments", which==="payments");
+      set("tabHelp", which==="help");
+
+      byId("viewAccounts").style.display = which==="accounts" ? "block" : "none";
+      byId("viewPayments").style.display = which==="payments" ? "block" : "none";
+      byId("viewHelp").style.display = which==="help" ? "block" : "none";
+
+      byId("navAccounts").classList.toggle("active", which==="accounts");
+      byId("navPayments").classList.toggle("active", which==="payments");
+      byId("navHelp").classList.toggle("active", which==="help");
+    }
+
+    function openModal(id){ show(byId(id)); }
+    function closeModal(id){ hide(byId(id)); }
+
+    function wireModal(id, closeBtnId){
+      byId(closeBtnId).addEventListener("click", () => closeModal(id));
+      byId(id).addEventListener("click", (e) => { if(e.target === byId(id)) closeModal(id); });
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
       applyBrandLogo(BRAND_LOGO_URL);
 
+      // Tab buttons + nav
+      byId("tabAccounts").onclick = () => setActiveTab("accounts");
+      byId("tabPayments").onclick = () => setActiveTab("payments");
+      byId("tabHelp").onclick = () => setActiveTab("help");
+      byId("navAccounts").onclick = () => setActiveTab("accounts");
+      byId("navPayments").onclick = () => setActiveTab("payments");
+      byId("navHelp").onclick = () => setActiveTab("help");
+
+      // Account taps
       document.querySelectorAll(".accountCard").forEach(card => {
         card.addEventListener("click", () => openAccount(card.getAttribute("data-acct")));
       });
 
-      byId("btnCloseAccount").addEventListener("click", () => hide(byId("accountModal")));
-      byId("accountModal").addEventListener("click", (e) => {
-        if (e.target === byId("accountModal")) hide(byId("accountModal"));
-      });
+      // Modals
+      wireModal("accountModal", "btnCloseAccount");
+      wireModal("approvalsModal", "btnCloseApprovals");
+      wireModal("alertsModal", "btnCloseAlerts");
+      byId("btnAlertsClose2").onclick = () => closeModal("alertsModal");
 
-      const openApprovals = () => show(byId("approvalsModal"));
-      byId("btnApprovals").addEventListener("click", openApprovals);
-      byId("btnViewApprovals").addEventListener("click", openApprovals);
-      byId("btnCloseApprovals").addEventListener("click", () => hide(byId("approvalsModal")));
-      byId("approvalsModal").addEventListener("click", (e) => {
-        if (e.target === byId("approvalsModal")) hide(byId("approvalsModal"));
-      });
+      // Approvals / Alerts openers
+      byId("btnApprovals").onclick = () => openModal("approvalsModal");
+      byId("btnAlerts").onclick = () => openModal("alertsModal");
+      byId("btnShowAlerts").onclick = () => openModal("alertsModal");
+      byId("btnShowApprovals").onclick = () => openModal("approvalsModal");
 
-      byId("btnPay").addEventListener("click", () => openAccount("business-current"));
-      byId("btnTransfer").addEventListener("click", () => openAccount("business-saver"));
-      byId("btnAcctPay").addEventListener("click", () => alert("Demo: open payments flow"));
-      byId("btnAcctStatement").addEventListener("click", () => alert("Demo: open statement"));
-      byId("btnApproveAll").addEventListener("click", () => alert("Demo: approvals submitted"));
+      // Demo buttons
+      byId("btnPay").onclick = () => openAccount("business-current");
+      byId("btnTransfer").onclick = () => openAccount("business-saver");
+      byId("btnAcctPay").onclick = () => alert("Demo: open payments flow");
+      byId("btnAcctStatement").onclick = () => alert("Demo: open statement");
+      byId("btnApproveAll").onclick = () => alert("Demo: approvals submitted");
+      byId("btnNewPayment").onclick = () => alert("Demo: new payment");
+      byId("btnBeneficiaries").onclick = () => alert("Demo: beneficiaries");
 
-      byId("btnChatNow").addEventListener("click", openChat);
-      byId("btnHeaderChat").addEventListener("click", openChat);
-      byId("btnAcctChat").addEventListener("click", () => {
-        hide(byId("accountModal"));
-        openChat();
-      });
-      byId("btnApprovalsChat").addEventListener("click", () => {
-        hide(byId("approvalsModal"));
-        openChat();
-      });
+      // Chat openers
+      byId("btnChatNow").onclick = openChat;
+      byId("btnHeaderChat").onclick = openChat;
+      byId("btnPaymentsChat").onclick = openChat;
+      byId("btnHelpChat").onclick = openChat;
+      byId("btnApprovalsChat").onclick = () => { closeModal("approvalsModal"); openChat(); };
+      byId("btnAlertsChat").onclick = () => { closeModal("alertsModal"); openChat(); };
+      byId("btnAcctChat").onclick = () => { closeModal("accountModal"); openChat(); };
 
-      byId("btnCloseChat").addEventListener("click", () => hide(byId("chatOverlay")));
+      // Chat close
+      byId("btnCloseChat").onclick = () => hide(byId("chatOverlay"));
       byId("chatOverlay").addEventListener("click", (e) => {
-        if (e.target === byId("chatOverlay")) hide(byId("chatOverlay"));
+        if(e.target === byId("chatOverlay")) hide(byId("chatOverlay"));
+      });
+
+      // Transaction search (simple demo filter)
+      const txInput = byId("txSearch");
+      txInput.addEventListener("input", () => {
+        const q = (txInput.value || "").trim().toLowerCase();
+        if (!q) return;
+        const hit = ALL_TX.find(t =>
+          (t.name + " " + t.meta + " " + t.account).toLowerCase().includes(q)
+        );
+        if (hit){
+          // tiny hint UX: open the likely account when searching
+          const acctKey = hit.account.includes("Saver") ? "business-saver" : "business-current";
+          openAccount(acctKey);
+          txInput.blur();
+        }
       });
     });
   </script>
