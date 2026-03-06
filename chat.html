@@ -6,38 +6,66 @@
   <title>Cynergy Bank Chat</title>
 
   <style>
-    html, body { height:100%; margin:0; background:#fff; }
-    body { overflow:hidden; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #fff;
+    }
+
+    body {
+      overflow: hidden;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
 
     .boot {
-      position:fixed; inset:0;
-      display:flex; flex-direction:column;
-      align-items:center; justify-content:center;
-      gap:12px;
-      padding:18px;
-      background:#fff;
-      z-index:9999;
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 18px;
+      background: #fff;
+      z-index: 9999;
     }
-    .boot.hidden { display:none; }
 
-    .bootTitle { font-weight:1000; font-size:16px; color:#083A44; text-align:center; }
-    .bootSub { font-weight:800; font-size:12px; color:#5E6E73; text-align:center; line-height:1.4; max-width:340px; }
+    .boot.hidden {
+      display: none;
+    }
+
+    .bootTitle {
+      font-weight: 1000;
+      font-size: 16px;
+      color: #083A44;
+      text-align: center;
+    }
+
+    .bootSub {
+      font-weight: 800;
+      font-size: 12px;
+      color: #5E6E73;
+      text-align: center;
+      line-height: 1.4;
+      max-width: 340px;
+    }
 
     .bootBtn {
-      border:none; border-radius:16px;
-      padding:12px 14px;
-      font-weight:1000;
-      cursor:pointer;
-      background:linear-gradient(180deg,#00B7A7,#009C8E);
-      color:#fff;
-      width:min(340px, 92vw);
-      font-size:14px;
+      border: none;
+      border-radius: 16px;
+      padding: 12px 14px;
+      font-weight: 1000;
+      cursor: pointer;
+      background: linear-gradient(180deg, #00B7A7, #009C8E);
+      color: #fff;
+      width: min(340px, 92vw);
+      font-size: 14px;
     }
 
     .hideChrome [class*="home" i],
     .hideChrome header[role="banner"],
-    .hideChrome [role="banner"]{
-      display:none !important;
+    .hideChrome [role="banner"] {
+      display: none !important;
     }
   </style>
 </head>
@@ -51,7 +79,6 @@
     <button class="bootBtn" id="bootStart">Start chat</button>
   </div>
 
-  <!-- You can also use "latest" if you want feature parity with portal faster -->
   <script src="https://github.com/Cognigy/Webchat/releases/latest/download/webchat.js"></script>
 
   <script>
@@ -61,10 +88,12 @@
     const boot = document.getElementById("boot");
     const bootStart = document.getElementById("bootStart");
 
-    // Optional: pass customer context into the session
-    const customer = { name: "Andy Martin", accountNumber: "54060264" };
+    const customer = {
+      name: "Andy Martin",
+      accountNumber: "54060264"
+    };
 
-    function hasUsableInput(){
+    function hasUsableInput() {
       const t = document.querySelector("textarea");
       if (t && t.offsetWidth > 0 && t.offsetHeight > 0) return true;
 
@@ -77,8 +106,8 @@
       return false;
     }
 
-    function hideBootIfReady(){
-      if (hasUsableInput()){
+    function hideBootIfReady() {
+      if (hasUsableInput()) {
         boot.classList.add("hidden");
         document.documentElement.classList.add("hideChrome");
         return true;
@@ -86,7 +115,7 @@
       return false;
     }
 
-    function clickLauncherIfPresent(){
+    function clickLauncherIfPresent() {
       const launcher =
         document.querySelector("[data-testid*='launcher' i]") ||
         document.querySelector("[aria-label*='open' i][role='button']") ||
@@ -94,21 +123,35 @@
         document.querySelector("button[class*='launcher' i]") ||
         document.querySelector("[class*='launcher' i] button");
 
-      if (launcher && launcher.offsetWidth > 0 && launcher.offsetHeight > 0){
+      if (launcher && launcher.offsetWidth > 0 && launcher.offsetHeight > 0) {
         launcher.click();
         return true;
       }
       return false;
     }
 
-    function clickStartConversationIfPresent(){
-      const labels = ["Start conversation","Start Conversation","Start","Begin","Get started"];
+    function clickStartConversationIfPresent() {
+      const labels = [
+        "Start conversation",
+        "Start Conversation",
+        "Start",
+        "Begin",
+        "Get started"
+      ];
+
       const btns = Array.from(document.querySelectorAll("button"));
-      for (const b of btns){
+      for (const b of btns) {
         const txt = (b.innerText || "").trim();
         if (!txt) continue;
-        if (labels.some(l => txt.toLowerCase() === l.toLowerCase() || txt.toLowerCase().includes(l.toLowerCase()))){
-          if (b.offsetWidth > 0 && b.offsetHeight > 0){
+
+        if (
+          labels.some(
+            (l) =>
+              txt.toLowerCase() === l.toLowerCase() ||
+              txt.toLowerCase().includes(l.toLowerCase())
+          )
+        ) {
+          if (b.offsetWidth > 0 && b.offsetHeight > 0) {
             b.click();
             return true;
           }
@@ -117,7 +160,7 @@
       return false;
     }
 
-    function attemptOpen(){
+    function attemptOpen() {
       if (hideBootIfReady()) return true;
       const didLauncher = clickLauncherIfPresent();
       const didStart = clickStartConversationIfPresent();
@@ -134,24 +177,44 @@
       }, 200);
     });
 
-    try{
+    function clearCognigyStorage() {
+      try {
+        Object.keys(localStorage).forEach((key) => {
+          if (key.toLowerCase().includes("cognigy")) {
+            localStorage.removeItem(key);
+          }
+        });
+
+        Object.keys(sessionStorage).forEach((key) => {
+          if (key.toLowerCase().includes("cognigy")) {
+            sessionStorage.removeItem(key);
+          }
+        });
+      } catch (e) {
+        console.warn("Could not clear stored chat state", e);
+      }
+    }
+
+    clearCognigyStorage();
+
+    const freshSessionId =
+      "session-" + Date.now() + "-" + Math.random().toString(36).slice(2, 10);
+
+    try {
       initWebchat(ENDPOINT, {
-        // Helpful for analytics + keeping sessions stable in demos
         userId: customer.accountNumber,
-        sessionId: "andy-martin-demo",
-
+        sessionId: freshSessionId,
         settings: {
-          embeddingConfiguration: { awaitEndpointConfig: true },
-
-          // Provide context to your flow (readable in input.data / profile depending on config)
-          // If your flow uses different fields, adjust as needed.
+          embeddingConfiguration: {
+            awaitEndpointConfig: true
+          },
           payload: {
             customerName: customer.name,
             accountNumber: customer.accountNumber
           }
         }
       });
-    } catch (e){
+    } catch (e) {
       console.error("initWebchat failed:", e);
     }
 
@@ -166,40 +229,50 @@
       attemptOpen();
       if (hasUsableInput()) obs.disconnect();
     });
-    obs.observe(document.documentElement, { childList:true, subtree:true });
+    obs.observe(document.documentElement, { childList: true, subtree: true });
 
-    // Stream-merge shim: merges consecutive bot chunks into one bubble
-    (function installStreamMergeShim(){
-      const MERGE_WINDOW_MS = 1400;
+    (function installStreamMergeShim() {
       let lastMergeAt = 0;
+      const MERGE_WINDOW_MS = 1400;
 
-      function isVisible(el){
+      function isVisible(el) {
         return !!(el && el.getClientRects && el.getClientRects().length);
       }
 
-      function getBubbles(){
-        const sel = [
+      function getBubbles() {
+        const selectors = [
           "[class*='message' i]",
           "[data-testid*='message' i]",
           "[role='listitem']"
         ].join(",");
-        return Array.from(document.querySelectorAll(sel)).filter(isVisible);
+
+        return Array.from(document.querySelectorAll(selectors)).filter(isVisible);
       }
 
-      function isBotBubble(el){
+      function isBotBubble(el) {
         const cls = (el.className || "").toString().toLowerCase();
         const tid = (el.getAttribute("data-testid") || "").toLowerCase();
-        return cls.includes("bot") || cls.includes("agent") || cls.includes("incoming") ||
-               tid.includes("bot") || tid.includes("agent") || tid.includes("incoming");
+
+        return (
+          cls.includes("bot") ||
+          cls.includes("agent") ||
+          cls.includes("incoming") ||
+          tid.includes("bot") ||
+          tid.includes("agent") ||
+          tid.includes("incoming")
+        );
       }
 
-      function textNode(el){
-        return el.querySelector("[class*='text' i]") ||
-               el.querySelector("[class*='content' i]") ||
-               el.querySelector("p") || el;
+      function textNode(el) {
+        return (
+          el.querySelector("[class*='text' i]") ||
+          el.querySelector("[class*='content' i]") ||
+          el.querySelector("p") ||
+          el
+        );
       }
 
-      function mergeIfNeeded(){
+      function mergeIfNeeded() {
         const bubbles = getBubbles();
         if (bubbles.length < 2) return;
 
@@ -209,13 +282,10 @@
         if (!isBotBubble(b1) || !isBotBubble(b2)) return;
 
         const now = Date.now();
-        if (lastMergeAt && (now - lastMergeAt > MERGE_WINDOW_MS)) {
-          // still allow merge; comment this out if you want stricter behavior
-        }
-
         const t1 = textNode(b1);
         const t2 = textNode(b2);
         const chunk = (t2.innerText || "").trim();
+
         if (!chunk) return;
 
         const sep = (t1.innerText || "").trim().length ? "\n" : "";
@@ -224,12 +294,23 @@
         lastMergeAt = now;
       }
 
-      const mergeObserver = new MutationObserver((muts) => {
-        if (!muts.some(m => m.addedNodes && m.addedNodes.length)) return;
-        for (let i = 0; i < 4; i++) mergeIfNeeded();
+      const mergeObserver = new MutationObserver((mutations) => {
+        if (!mutations.some((m) => m.addedNodes && m.addedNodes.length)) return;
+
+        const now = Date.now();
+        if (lastMergeAt && now - lastMergeAt > MERGE_WINDOW_MS) {
+          // keep trying anyway; retained for easy tuning
+        }
+
+        for (let i = 0; i < 4; i++) {
+          mergeIfNeeded();
+        }
       });
 
-      mergeObserver.observe(document.documentElement, { childList:true, subtree:true });
+      mergeObserver.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+      });
     })();
   </script>
 </body>
